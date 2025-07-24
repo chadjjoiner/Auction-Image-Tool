@@ -7,6 +7,7 @@ import tempfile
 
 
 
+st.image("https://raw.githubusercontent.com/yourusername/yourrepo/main/logo.png", width=200)
 st.title("📦 Auction Image Resizer & Renamer")
 
 st.markdown("""
@@ -24,6 +25,7 @@ st.markdown("""
 
 img_zip = st.file_uploader("Upload ZIP with ALL images", type="zip")
 tag_zip = st.file_uploader("Upload ZIP with TAG images only (in order)", type="zip")
+last_lot_input = st.number_input("📍 Last lot number used in previous batch (leave 0 to start at 1)", min_value=0, value=0)
 skip_lots_input = st.text_input("❌ Enter lot numbers to skip (e.g. 113, 116)")
 extra_lots_input = st.text_input("➕ Enter extra lots to insert (e.g. 105A, 110B)")
 
@@ -54,7 +56,7 @@ if img_zip and tag_zip:
         skip_lots = [lot.strip() for lot in skip_lots_input.split(',') if lot.strip()] if skip_lots_input else []
         extra_lots = [lot.strip() for lot in extra_lots_input.split(',') if lot.strip()] if extra_lots_input else []
 
-        base_lot_start = 101
+        base_lot_start = last_lot_input + 1
         needed_count = len(tag_imgs) - len(extra_lots)
 
         base_lots = [str(i) for i in range(base_lot_start, base_lot_start + needed_count + len(skip_lots) + len(extra_lots)) if str(i) not in skip_lots]
